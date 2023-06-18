@@ -30,7 +30,7 @@ Po wykonaniu dowolnej komendy (np. "saldo") aplikacja ponownie wyświetla inform
 Zadbaj o błędy, które mogą się pojawić w trakcie wykonywania operacji (np. przy komendzie "zakup" jeśli dla produktu podamy ujemną kwotę, aplikacja powinna wyświetlić informację o niemożności wykonania operacji i jej nie wykonać). Zadbaj też o prawidłowe typy danych.
 '''
 saldo = 1000.0
-magazyn = {
+warehouse = {
     "bułka": {
         "ilość": 10,
         "cena": 2
@@ -46,11 +46,12 @@ initial_message = "Witaj w aplikacji obsługi magazynu. Lista dostępnych operac
 
 end_program = False
 while not end_program:
+    print(warehouse)
+    print(saldo)
     print(initial_message)
     operation = input("Wybierz komendę poprzez wpisanie odpowiedniego numeru: ")
     match operation:
         case    "1":
-            #TODO zapytaj o rodzaj operacji - dodać czy odjąć
             option = (input("Podaj rodzaj operacji:\n 1. Powiększenie salda\n 2. Pomniejszenie salda\n"))
             if option == "1":
                 amount = float(input("Podaj kwotę: "))
@@ -68,5 +69,31 @@ while not end_program:
                 print("Wybrano niepoprawny numer operacji.")
 
             print(saldo)
+        case "2":
+            print(warehouse)
+            try:
+                product, amount = tuple(
+                    input("Podaj nazwę produktu i ilość po przecinku: ").replace(" ", "").split(","))
+                amount = int(amount)
+                product_found = False
+                insufficient_quantity = False
+                for item, item_details in warehouse.items():
+                    if product == item:
+                        product_found = True
+                        if item_details["ilość"] >= amount:
+                            item_details["ilość"] -= amount
+                            saldo += item_details["cena"] * amount
+                        else:
+                            insufficient_quantity = True
+                        break
+
+                if not product_found:
+                    print("Nie znaleziono takiego produktu.")
+                elif insufficient_quantity:
+                    print(f'Brak towaru w takiej ilości. Liczba dostępnych sztuk to: {item_details["ilość"]}.')
+
+            except ValueError:
+                print("Niepoprawny format, poprawny zapis to: produkt,ilość")
+
         case other:
             print("Nieprawidłowa komenda, wprowadź numer ponownie.\n")

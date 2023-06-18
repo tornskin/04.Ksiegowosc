@@ -41,5 +41,32 @@ magazyn = {
     }
 }
 
-initial_message = "Witaj w aplikacji obsługi magazynu. Wybierz komendę poprzez wpisanie odpowiedniego numeru:\n" \
-    " 1. Saldo\n 2. Sprzedaż\n 3. Zakup\n 4. Konto\n 5. Lista\n 6. Magazyn\n 7. Przegląd\n 8. Koniec"
+initial_message = "Witaj w aplikacji obsługi magazynu. Lista dostępnych operacji:\n" \
+    " 1. Saldo\n 2. Sprzedaż\n 3. Zakup\n 4. Konto\n 5. Lista\n 6. Magazyn\n 7. Przegląd\n 8. Koniec\n"
+
+end_program = False
+while not end_program:
+    print(initial_message)
+    operation = input("Wybierz komendę poprzez wpisanie odpowiedniego numeru: ")
+    match operation:
+        case    "1":
+            #TODO zapytaj o rodzaj operacji - dodać czy odjąć
+            option = (input("Podaj rodzaj operacji:\n 1. Powiększenie salda\n 2. Pomniejszenie salda\n"))
+            if option == "1":
+                amount = float(input("Podaj kwotę: "))
+                if amount > 0:
+                    saldo += amount
+                else:
+                    print("Podana wartość nie jest dodatnia.")
+            elif option == "2":
+                amount = float(input("Podaj kwotę: "))
+                if amount < 0:
+                    saldo += amount
+                else:
+                    print("Podana wartość nie jest ujemna.")
+            else:
+                print("Wybrano niepoprawny numer operacji.")
+
+            print(saldo)
+        case other:
+            print("Nieprawidłowa komenda, wprowadź numer ponownie.\n")

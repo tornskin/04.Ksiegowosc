@@ -40,7 +40,7 @@ warehouse = {
         "cena": 3
     }
 }
-
+history = []
 initial_message = "Witaj w aplikacji obsługi magazynu. Lista dostępnych operacji:\n" \
     " 1. Saldo\n 2. Sprzedaż\n 3. Zakup\n 4. Konto\n 5. Lista\n 6. Magazyn\n 7. Przegląd\n 8. Koniec\n"
 
@@ -57,12 +57,14 @@ while not end_program:
                 amount = float(input("Podaj kwotę: "))
                 if amount > 0:
                     saldo += amount
+                    history.append(f"Zmieniono saldo o kwotę: {amount}") #added history
                 else:
                     print("Podana wartość nie jest dodatnia.")
             elif option == "2":
                 amount = float(input("Podaj kwotę: "))
                 if amount < 0:
                     saldo += amount
+                    history.append(f"Zmieniono saldo o kwotę: {amount}") #added history
                 else:
                     print("Podana wartość nie jest ujemna.")
             else:
@@ -83,6 +85,7 @@ while not end_program:
                         if item_details["ilość"] >= amount:
                             item_details["ilość"] -= amount
                             saldo += item_details["cena"] * amount
+                            history.append(f"Sprzedano {product} w ilości {amount}") ##added history
                         else:
                             insufficient_quantity = True
                         break
@@ -91,9 +94,19 @@ while not end_program:
                     print("Nie znaleziono takiego produktu.")
                 elif insufficient_quantity:
                     print(f'Brak towaru w takiej ilości. Liczba dostępnych sztuk to: {item_details["ilość"]}.')
+                    history.append(f"Nie udało się sprzedać towaru {product}, zbyt mała ilość na magazynie")  ##added history
 
             except ValueError:
                 print("Niepoprawny format, poprawny zapis to: produkt,ilość")
+
+        case "7":
+            value_from = input("Podaj początkowy zakres: ")
+            value_to = input("Podaj końcowy zakres: ")
+            if not value_to and not value_to:
+                print(history)
+            if value_from and not value_to:
+                print(history[value_from:])
+                #TODO dokończyć
 
         case other:
             print("Nieprawidłowa komenda, wprowadź numer ponownie.\n")

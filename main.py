@@ -46,8 +46,6 @@ initial_message = "Witaj w aplikacji obsługi magazynu. Lista dostępnych operac
 
 end_program = False
 while not end_program:
-    print(warehouse)
-    print(saldo)
     print(initial_message)
     operation = input("Wybierz komendę poprzez wpisanie odpowiedniego numeru: ")
     match operation:
@@ -71,6 +69,7 @@ while not end_program:
                 print("Wybrano niepoprawny numer operacji.")
 
             print(saldo)
+
         case "2":
             print(warehouse)
             try:
@@ -99,14 +98,80 @@ while not end_program:
             except ValueError:
                 print("Niepoprawny format, poprawny zapis to: produkt,ilość")
 
-        case "7":
-            value_from = input("Podaj początkowy zakres: ")
-            value_to = input("Podaj końcowy zakres: ")
-            if not value_to and not value_to:
-                print(history)
-            if value_from and not value_to:
-                print(history[value_from:])
-                #TODO dokończyć
+        case "3":
+            try:
+                product, amount = tuple(
+                    input("Podaj nazwę produktu, który chcesz zakupić i jego ilość po przecinku: ").replace(" ",
+                                                                                                            "").split(
+                        ","))
+                amount = int(amount)
+                product_found = False
 
+                for item, item_details in warehouse.items():
+                    if product == item:
+                        product_found = True
+                        if saldo < item_details["cena"] * amount:
+                            print("Brak wystarczających środków na zakup.")
+                            break
+                        item_details["ilość"] += amount
+                        saldo -= item_details["cena"] * amount
+                        history.append(f"Zakupiono {product} w ilości {amount}")  ##added history
+                        break
+
+                if not product_found:
+                    price = float(input("Podaj cenę produktu: "))
+                    warehouse[product] = {
+                        "ilość": amount,
+                        "cena": price
+                    }
+                    saldo -= price * amount
+                    history.append(f"Dodano nowy produkt: {product} w ilości {amount} po cenie {price}")
+
+            except ValueError:
+                print("Niepoprawny format, poprawny zapis to: produkt,ilość")
+
+        case "4":
+            print(f"Aktualny stan konta: {saldo}")
+
+        case "5":
+            print(warehouse)
+
+        case "6":
+            product = input("Podaj nazwę towaru, którego stan chcesz sprawdzić: ")
+            product_found = False
+            for item, item_details in warehouse.items():
+                if product == item:
+                    product_found = True
+                    print(item_details)
+                    break
+            if not product_found:
+                print("Nie znaleziono takiego produktu w magazynie.")
+
+        case "7":
+            while True:
+                value_from = input("Podaj początkowy zakres: ")
+                value_to = input("Podaj końcowy zakres: ")
+
+                if value_to > "3":
+                    print("Zakres końcowy nie może być większy niż 3.")
+                    continue
+                if not value_to and not value_to:
+                    print(history)
+                    break
+                if value_from and not value_to:
+                    value_from = int(value_from) - 1
+                    print(history[value_from:])
+                    break
+                if not value_from and value_to:
+                    value_to = int(value_to)
+                    print(history[:value_to])
+                    break
+                if value_from and value_to:
+                    value_from = int(value_from) - 1
+                    value_to = int(value_to)
+                    print(history[value_from:value_to])
+                    break
+        case "8":
+            end_program = True
         case other:
             print("Nieprawidłowa komenda, wprowadź numer ponownie.\n")

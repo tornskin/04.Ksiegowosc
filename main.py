@@ -44,6 +44,24 @@ history = []
 initial_message = "Witaj w aplikacji obsługi magazynu. Lista dostępnych operacji:\n" \
     " 1. Saldo\n 2. Sprzedaż\n 3. Zakup\n 4. Konto\n 5. Lista\n 6. Magazyn\n 7. Przegląd\n 8. Koniec\n"
 
+def save_data():
+    with open("data.txt", "w") as file:
+        file.write(str(saldo) + "\n")
+        file.write(str(warehouse) + "\n")
+        file.write("\n".join(history))
+
+def load_data():
+    global saldo, warehouse, history
+    try:
+        with open("data.txt", "r") as file:
+            saldo = float(file.readline().strip())
+            warehouse = eval(file.readline().strip())
+            history = file.read().splitlines()
+    except FileNotFoundError:
+        print("Nie znaleziono pliku z danymi. Tworzenie nowego pliku.")
+
+load_data()
+
 end_program = False
 while not end_program:
     print(initial_message)
@@ -173,5 +191,6 @@ while not end_program:
                     break
         case "8":
             end_program = True
+            save_data()
         case other:
             print("Nieprawidłowa komenda, wprowadź numer ponownie.\n")

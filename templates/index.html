@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Aplikacja do zarządzania firmą</title>
+</head>
+<body>
+    <h1>Stan konta: {{ saldo }}</h1>
+    <h1>Magazyn:</h1>
+    <ul>
+        {% for product, details in warehouse.items() %}
+            <li>{{ product }} - Ilość: {{ details['ilość'] }}, Cena: {{ details['cena'] }}</li>
+        {% endfor %}
+    </ul>
+	<!-- Formularz zakupu -->
+	<h1>Formularz zakupu:</h1>
+	<form action="/purchase" method="post">
+		Nazwa produktu: <input type="text" name="product"><br>
+		Cena: <input type="number" name="price" step="0.01"><br>
+		Ilość: <input type="number" name="quantity"><br>
+		<input type="submit" value="Zakup">
+	</form>
+
+	<!-- Formularz sprzedaży -->
+	<h1>Formularz sprzedaży:</h1>
+	<form action="/sale" method="post">
+		Nazwa produktu: <input type="text" name="product"><br>
+		Ilość: <input type="number" name="quantity"><br>
+		<input type="submit" value="Sprzedaż">
+	</form>
+	<!-- Formularz zmiany salda -->
+	<h1>Formularz zmiany salda:</h1>
+	<form action="/change_balance" method="post">
+		Wartość zmiany salda: <input type="number" name="amount" step="0.01"><br>
+		<input type="submit" value="Zmień saldo">
+	</form>
+    <a href="/history">Historia operacji</a>
+</body>
+</html>

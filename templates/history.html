@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Historia operacji</title>
+</head>
+<body>
+    <h1>Historia operacji:</h1>
+    <ul>
+        {% for entry in history_data %}
+            <li>{{ entry }}</li>
+        {% endfor %}
+    </ul>
+    <a href="/">Powrót</a>
+</body>
+</html>

@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Historia operacji</title>
+</head>
+<body>
+    <h1>Niepoprawny zakres historii. Spróbuj ponownie.</h1>
+    <form action="/history" method="get">
+        Początek zakresu: <input type="number" name="start"><br>
+        Koniec zakresu: <input type="number" name="end"><br>
+        <input type="submit" value="Pokaż historię">
+    </form>
+    <p>Poprawny zakres historii: 1 - {{ history_len }}</p> <!-- Dodaj informację o poprawnym zakresie -->
+    <a href="/">Powrót</a>
+</body>
+</html>

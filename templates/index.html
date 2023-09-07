@@ -7,9 +7,10 @@
     <h1>Stan konta: {{ saldo }}</h1>
     <h1>Magazyn:</h1>
     <ul>
-        {% for product, details in warehouse.items() %}
-            <li>{{ product }} - Ilość: {{ details['ilość'] }}, Cena: {{ details['cena'] }}</li>
-        {% endfor %}
+	  {% for product in products %}
+		<li>{{ product.name }} - Quantity: {{ product.quantity }} - Price: {{ product.price }}</li>
+	  {% endfor %}
+	</ul>
     </ul>
 	<!-- Formularz zakupu -->
 	<h1>Formularz zakupu:</h1>

@@ -6,10 +6,19 @@
 <body>
     <h1>Historia operacji:</h1>
     <ul>
-        {% for entry in history_data %}
-            <li>{{ entry }}</li>
+        {% for transaction in history_data %}
+            <li>
+                {{ transaction.timestamp }} -
+                {% if transaction.operation == 'Zakup' %}
+                    Zakup produktu: {{ transaction.product.name }}, ilość: {{ transaction.quantity }}
+                {% elif transaction.operation == 'Sprzedaż' %}
+                    Sprzedaż produktu: {{ transaction.product.name }}, ilość: {{ transaction.quantity }}
+                {% elif transaction.operation == 'Zmiana Salda' %}
+                    Zmiana salda o: {{ transaction.quantity }}
+                {% endif %}
+            </li>
         {% endfor %}
     </ul>
-    <a href="/">Powrót</a>
+    <a href="{{ url_for('index') }}">Powrót</a>
 </body>
 </html>
